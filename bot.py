@@ -23,6 +23,12 @@ def has_high_role(ctx):
 
 @bot.event
 async def on_member_join(member):
+    await member.send('Bem vindo a kosmica!')
+    await member.send('junte-se tambem a cosmic: https://discord.gg/39bC3rKmGH')
+
+@bot.event
+async def on_member_join(member):
+    
     channel = bot.get_channel(1151979648566186074)
     pfp = member.avatar.url
     background = Editor("pic1.jpg")
@@ -201,13 +207,12 @@ async def avatar(ctx,member: discord.Member=None):
 
 @bot.command()
 @commands.check(has_high_role)
-async def setrole(ctx,member: discord.Member,*,cargo):
-    role = discord.utils.get(ctx.guild.roles, name=f'{cargo}')
+async def setrole(ctx,member: discord.Member,role: discord.Role):
     await member.add_roles(role)
     embed = discord.Embed(title=f'Você setou cargo em {member.name}')
     embed.set_author(name="Kosmica setrole", icon_url=cosmicpc)
     embed.set_thumbnail(url=cosmicpc)
-    embed.add_field(name='Cargo:',value=f'{cargo}',inline=False)
+    embed.add_field(name='Cargo:',value=f'{role.name}',inline=False)
     embed.set_footer(text=f"Kosmica/Nanno ©")
     msg = await ctx.send(embed=embed)
     await ctx.message.delete()
