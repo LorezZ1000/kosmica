@@ -21,10 +21,17 @@ def has_high_role(ctx):
         return True
     return False
 
-@bot.event
-async def on_member_join(member):
-    await member.send('Bem vindo a kosmica!')
-    await member.send('junte-se tambem a cosmic: https://discord.gg/39bC3rKmGH')
+def has_high_roles(ctx):
+    required_role_name = "Nuke"
+    required_role_name2 = "My melody"
+    required_role_name3 = "Ajudante"
+    role = discord.utils.get(ctx.guild.roles, name=required_role_name)
+    role2 = discord.utils.get(ctx.guild.roles, name=required_role_name2)
+    role3 = discord.utils.get(ctx.guild.roles, name=required_role_name3)
+    print(f"User's roles: {[role.name for role in ctx.author.roles]}")
+    if role in ctx.author.roles or role2 in ctx.author.roles or role3 in ctx.author.roles:
+        return True
+    return False
 
 @bot.event
 async def on_member_join(member):
@@ -50,6 +57,8 @@ async def on_member_join(member):
     
     role = discord.utils.get(member.guild.roles, name='RANDOM')
     await member.add_roles(role)
+    await member.send('Bem vindo a kosmica!')
+    await member.send('junte-se tambem a cosmic: https://discord.gg/39bC3rKmGH')
 
 @bot.event
 async def on_message(message):
@@ -67,8 +76,9 @@ async def on_ready():
     print('logado com sucesso!')
     
 @bot.command()
-@commands.check(has_high_role)
+@commands.check(has_high_roles)
 async def mute(ctx,member: discord.Member, *,motivo=None):
+    logchan = bot.get_channel(1152472986679517265)
     if motivo is None:
         motivo = "📝 Sem motivo!"
     muted_role = discord.utils.get(ctx.guild.roles, name='Mute')
@@ -80,13 +90,15 @@ async def mute(ctx,member: discord.Member, *,motivo=None):
     embed.add_field(name='motivo:',value=f'{motivo}',inline=False)
     embed.set_footer(text="Kosmica/Nanno ©")
     msg = await ctx.send(embed=embed)
+    msg2 = await logchan.send(embed=embed)
     await ctx.message.delete()
     await asyncio.sleep(15)
     await msg.delete()
     
 @bot.command()
-@commands.check(has_high_role)
+@commands.check(has_high_roles)
 async def unmute(ctx,member: discord.Member):
+    logchan = bot.get_channel(1152472986679517265)
     muted_role = discord.utils.get(ctx.guild.roles, name='Mute')
     await member.remove_roles(muted_role)
     embed = discord.Embed(title=f'{member.name} foi Desmutado')
@@ -96,6 +108,7 @@ async def unmute(ctx,member: discord.Member):
     embed.add_field(name='Obs:',value=f'se fizer merda toma dnv',inline=False)
     embed.set_footer(text="Kosmica/Nanno ©")
     msg = await ctx.send(embed=embed)
+    msg2 = await logchan.send(embed=embed)
     await ctx.message.delete()
     await asyncio.sleep(15)
     await msg.delete()
@@ -103,6 +116,7 @@ async def unmute(ctx,member: discord.Member):
 @bot.command()
 @commands.check(has_high_role)
 async def ban(ctx,member: discord.Member,*,motivo=None):
+    logchan = bot.get_channel(1152473027372662784)
     if motivo is None:
         motivo = "📝 Sem motivo!"
     await member.ban(reason=motivo)
@@ -113,6 +127,7 @@ async def ban(ctx,member: discord.Member,*,motivo=None):
     embed.add_field(name='Motivo:',value=f'{motivo}',inline=False)
     embed.set_footer(text="Kosmica/Nanno ©")
     msg = await ctx.send(embed=embed)
+    msg2 = await logchan.send(embed=embed)
     await ctx.message.delete()
     await asyncio.sleep(15)
     await msg.delete()
@@ -120,6 +135,7 @@ async def ban(ctx,member: discord.Member,*,motivo=None):
 @bot.command()
 @commands.check(has_high_role)
 async def unban(ctx, id: int):
+    logchan = bot.get_channel(1152473027372662784)
     user = await bot.fetch_user(id)
     await ctx.guild.unban(user)
     embed = discord.Embed(title=f'{user.name} foi Desbanido!')
@@ -128,6 +144,7 @@ async def unban(ctx, id: int):
     embed.add_field(name='Autor do unban:',value=f'{ctx.author.name}',inline=False)
     embed.set_footer(text="Kosmica/Nanno ©")
     msg = await ctx.send(embed=embed)
+    msg2 = await logchan.send(embed=embed)
     await ctx.message.delete()
     await asyncio.sleep(15)
     await msg.delete()
@@ -161,7 +178,7 @@ async def nuke(ctx):
     await new_channel.edit(position=channel_position, category=channel_category, reason="nuke")
     
 @bot.command()
-@commands.check(has_high_role)
+@commands.check(has_high_roles)
 async def lock(ctx):
     if ctx.author.guild_permissions.manage_channels:
         await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
@@ -177,7 +194,7 @@ async def lock(ctx):
         await msg.delete()
 
 @bot.command()
-@commands.check(has_high_role)
+@commands.check(has_high_roles)
 async def unlock(ctx):
     if ctx.author.guild_permissions.manage_channels:
         await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
