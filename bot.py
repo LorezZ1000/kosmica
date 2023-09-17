@@ -236,4 +236,18 @@ async def setrole(ctx,member: discord.Member,role: discord.Role):
     await asyncio.sleep(15)
     await msg.delete()
 
+@bot.command()
+@commands.check(has_high_role)
+async def remove(ctx,member: discord.Member,role: discord.Role):
+    await member.remove_roles(role)
+    embed = discord.Embed(title=f'Você tirou cargo de {member.name}')
+    embed.set_author(name="Kosmica remove", icon_url=cosmicpc)
+    embed.set_thumbnail(url=cosmicpc)
+    embed.add_field(name='Cargo:',value=f'{role.name}',inline=False)
+    embed.set_footer(text=f"Kosmica/Nanno ©")
+    msg = await ctx.send(embed=embed)
+    await ctx.message.delete()
+    await asyncio.sleep(15)
+    await msg.delete()    
+
 bot.run('MTE1MTk3ODc3NTQ5MjQ0ODI1Ng.GKNjns.lPbJUUw-H5hdWHlji2lEIBPGFiRyRn0PiKb7kQ')
