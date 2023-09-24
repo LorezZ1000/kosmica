@@ -250,4 +250,4 @@ async def remove(ctx,member: discord.Member,role: discord.Role):
     await asyncio.sleep(15)
     await msg.delete()    
 
-bot.run('MTE1MTk3ODc3NTQ5MjQ0ODI1Ng.GKNjns.lPbJUUw-H5hdWHlji2lEIBPGFiRyRn0PiKb7kQ')
+bot.run('')
