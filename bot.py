@@ -324,9 +324,26 @@ async def menu_test(ctx):
             channel.send(view=view2)
             fechar.callback = fecharbt
             await channel.send(f'<@&1154431601141350410> {interaction.user.mention} *ticket aberto*',view=view2)
+
+        elif select.values[0] == "gayz":
+            guild = interaction.guild
+            overwrites = {
+                guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                interaction.user: discord.PermissionOverwrite(read_messages=True),
+                guild.get_role(1154431601141350410): discord.PermissionOverwrite(read_messages=True)
+            }
+            channel = await guild.create_text_channel("ticket-staff", overwrites=overwrites)
+            await interaction.response.send_message('seu ticket foi criado! te marcamos lá',ephemeral=True)
+            fechar = Button(label='fechar ticket', style=discord.ButtonStyle.red)
+            async def fecharbt(interaction):
+                await channel.delete()
+            view2 = View()
+            view2.add_item(fechar)
+            channel.send(view=view2)
+            fechar.callback = fecharbt
+            await channel.send(f'<@&1154431601141350410> {interaction.user.mention} *ticket aberto*',view=view2)
     select.callback = my_callback
     view = View()
     view.add_item(select)
     await ctx.send(embed=embed,view=view)
-
-bot.run('')
+bot.run('')           
