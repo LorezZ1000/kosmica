@@ -329,4 +329,4 @@ async def menu_test(ctx):
     view.add_item(select)
     await ctx.send(embed=embed,view=view)
 
-bot.run('MTE1MzEzMTU2Mjc5MjEzMjczMA.G73NK2.R5aUpnjuZgmoOFNnABfYT3C2GuY0SLNRtRnkdg')
+bot.run('')
