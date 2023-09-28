@@ -292,18 +292,20 @@ async def beijar(ctx,member: discord.Member=None):
     await asyncio.sleep(15)
     await msg.delete()
 
-@bot.command()
-async def menu_test(ctx):
+@bot.slash_command(name="ticket")
+async def ticket(ctx):
     embed = discord.Embed(title='Abrir ticket')
-    embed.add_field(name='algumas opções abaixo',value='', inline=False)
-    embed.add_field(name='Suporte',value='> abre um ticket de ajuda para suporte',inline=False)
-    embed.add_field(name='Ser staff',value='> envia formulario para a staff',inline=False)
-    embed.set_image(url='https://cdn.discordapp.com/attachments/1154418661428318259/1156244954381824112/20230926_1203131.gif?ex=65144487&is=6512f307&hm=98e525d0414305f0b4c0031bc2d43563296798ef527884fb383fdcb8396a287f&')
+    embed.add_field(name='  ৎ୭ algumas opções abaixo',value='꒷꒦︶﹕︶︶﹕୨`` ``୧﹕︶︶﹕︶꒦꒷', inline=False)
+    embed.add_field(name='Suporte',value='> Abre um ticket de ajuda para suporte',inline=False)
+    embed.add_field(name='Ser staff',value='> Abre ticket para ser staff',inline=False)
+    embed.add_field(name='Fazer parceria',value='> Abre ticket para fazer parceria',inline=False)
+    embed.set_image(url='https://cdn.discordapp.com/attachments/1155766448396959784/1156801697901989908/20230928_005626_0000.png?ex=65164b09&is=6514f989&hm=4098ce41cb2f1876d4ba7bba6c91201ae344b4da773ab8d72babfb078aa17b43&')
     select = Select(
         placeholder='abrir ticket',
         options=[
          discord.SelectOption(label='Suporte',value='0x11'),
-         discord.SelectOption(label='Ser staff',value="gayz")
+         discord.SelectOption(label='Ser staff',value="gayz"),
+         discord.SelectOption(label='Fazer parceria',value="parc")
     ]
 )
     async def my_callback(interaction):
@@ -318,6 +320,9 @@ async def menu_test(ctx):
             await interaction.response.send_message('seu ticket foi criado! te marcamos lá',ephemeral=True)
             fechar = Button(label='fechar ticket', style=discord.ButtonStyle.red)
             async def fecharbt(interaction):
+                embed = discord.Embed(title=f'ticket fechado por {interaction.user.name}')
+                await channel.send(embed=embed)
+                await asyncio.sleep(4)
                 await channel.delete()
             view2 = View()
             view2.add_item(fechar)
@@ -336,14 +341,67 @@ async def menu_test(ctx):
             await interaction.response.send_message('seu ticket foi criado! te marcamos lá',ephemeral=True)
             fechar = Button(label='fechar ticket', style=discord.ButtonStyle.red)
             async def fecharbt(interaction):
+                embed = discord.Embed(title=f'ticket fechado por {interaction.user.name}')
+                await channel.send(embed=embed)
+                await asyncio.sleep(4)
                 await channel.delete()
             view2 = View()
             view2.add_item(fechar)
             channel.send(view=view2)
             fechar.callback = fecharbt
             await channel.send(f'<@&1154431601141350410> {interaction.user.mention} *ticket aberto*',view=view2)
+        elif select.values[0] == "parc":
+            guild = interaction.guild
+            overwrites = {
+                guild.default_role: discord.PermissionOverwrite(read_messages=False),
+                interaction.user: discord.PermissionOverwrite(read_messages=True),
+                guild.get_role(1154431601141350410): discord.PermissionOverwrite(read_messages=True)
+            }
+            channel = await guild.create_text_channel("ticket-parceria", overwrites=overwrites)
+            await interaction.response.send_message('seu ticket foi criado! te marcamos lá',ephemeral=True)
+            fechar = Button(label='fechar ticket', style=discord.ButtonStyle.red)
+            async def fecharbt(interaction):
+                embed = discord.Embed(title=f'ticket fechado por {interaction.user.name}')
+                await channel.send(embed=embed)
+                await asyncio.sleep(4)
+                await channel.delete()
+            view2 = View()
+            view2.add_item(fechar)
+            channel.send(view=view2)
+            fechar.callback = fecharbt
+            await channel.send(f'<@&1154431601141350410> *ticket aberto para:* {interaction.user.mention}',view=view2)
     select.callback = my_callback
     view = View()
     view.add_item(select)
+    msg1 = await ctx.respond(embed=embed,view=view,ephemeral=True)
+
+@bot.command()
+@commands.check(has_high_role)
+async def requisitos(ctx):
+    embed = discord.Embed(title='REQUISITOS PARCERIA',description='* Olá, como nosso servidor tem a função de parcerias entre outras comunidades do Discord, também há Requisitos que devemos cumprir entre nossa parceria, que são os seguintes Requisitos abaixo.')
+    embed.add_field(name='',value=('''✨️ **1°** Não aceitamos Parcerias com nenhum servidor de conteúdos +18,vendas ou Giveaways, pois estão contra as regras do Discord.
+
+✨️ **2°** Seu servidor tem que ter no mínimo 50 membros, abaixo disso o indivíduo poderá marcar o cargo **@EVERYONE**
+
+✨️ **3°** é necessário ter um representante do servidor parceiro em nosso servidor, para que possa participar da nossa comunidade como representante do servidor parceiro.
+
+✨️ **4°** Seu servidor deve ter um nível de organização, tanto em canais quanto nos membros da sua Administração.
+
+✨️ **5°** Seu servidor deve cumprir todas as Regras de Comunidade do Discord, pois não queremos uma comunidade'''),inline=False)
+    embed.set_image(url='https://cdn.discordapp.com/attachments/1155766448396959784/1156726305820262440/REQUISITOS_20230927_193458_0000.png?ex=651604d2&is=6514b352&hm=cd650db5176b9cb3a04b7159b7f043381a597e34a6c0d2c93d6f1c16febf677b&')
+    await ctx.send(embed=embed)
+
+@bot.command()
+@commands.check(has_high_role)
+async def instagram(ctx):
+    embed = discord.Embed(title='Nosso instagram')
+    embed.add_field(name=' ৎ୭Oque fazemos lá?',value='꒷꒦︶﹕︶︶﹕୨`` ``୧﹕︶︶﹕︶꒦',inline=False)
+    embed.add_field(name='Atualizações',value='> lá postamos sempre que o server passa por atualizações',inline=True)
+    embed.add_field(name='Avisos',value='> lá avisamos quando está ou vai rolar eventos e etc...',inline=True)
+    embed.set_image(url='https://cdn.discordapp.com/attachments/1155766448396959784/1156733611949695026/REQUISITOS_20230927_201905_0000.png?ex=65160ba0&is=6514ba20&hm=7a20c404deba5d3b87de64c7490a2053cb9b5af54358833e49001b1da0772d60&')
+    link = Button(label='Visitar',url='https://instagram.com/kosmica_community?igshid=OGQ5ZDc2ODk2ZA==')
+    view = View()
+    view.add_item(link)
     await ctx.send(embed=embed,view=view)
+
 bot.run('')           
