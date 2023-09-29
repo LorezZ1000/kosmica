@@ -236,8 +236,11 @@ async def avatar(ctx,member: discord.Member=None):
     await msg.delete()
 
 @bot.command()
-@commands.check(has_high_role)
+@commands.check(has_high_roles)
 async def setrole(ctx,member: discord.Member,role: discord.Role):
+    if role.name == 'vossa majestade' or role.name == 'dama da noite':
+        return
+    logchan = bot.get_channel(1156821657520984074)
     await member.add_roles(role)
     embed = discord.Embed(title=f'Você setou cargo em {member.name}')
     embed.set_author(name="Kosmica setrole", icon_url=cosmicpc)
@@ -245,13 +248,17 @@ async def setrole(ctx,member: discord.Member,role: discord.Role):
     embed.add_field(name='Cargo:',value=f'{role.name}',inline=False)
     embed.set_footer(text=f"Kosmica/Nanno ©")
     msg = await ctx.send(embed=embed)
+    await logchan.send(f'{ctx.author.mention} setou cargo ',embed=embed)
     await ctx.message.delete()
     await asyncio.sleep(15)
     await msg.delete()
 
 @bot.command()
-@commands.check(has_high_role)
+@commands.check(has_high_roles)
 async def remove(ctx,member: discord.Member,role: discord.Role):
+    if role.name == 'vossa majestade' or role.name == 'dama da noite':
+        return
+    logchan = bot.get_channel(1156821657520984074)
     await member.remove_roles(role)
     embed = discord.Embed(title=f'Você tirou cargo de {member.name}')
     embed.set_author(name="Kosmica remove", icon_url=cosmicpc)
@@ -259,6 +266,7 @@ async def remove(ctx,member: discord.Member,role: discord.Role):
     embed.add_field(name='Cargo:',value=f'{role.name}',inline=False)
     embed.set_footer(text=f"Kosmica/Nanno ©")
     msg = await ctx.send(embed=embed)
+    await logchan.send(f'{ctx.author.mention} removeu cargo',embed=embed)
     await ctx.message.delete()
     await asyncio.sleep(15)
     await msg.delete()
@@ -350,6 +358,27 @@ async def ticket(ctx):
             channel.send(view=view2)
             fechar.callback = fecharbt
             await channel.send(f'<@&1154431601141350410> {interaction.user.mention} *ticket aberto*',view=view2)
+            embed = discord.Embed(title='Formulario para staff')
+            embed.add_field(name='',value=('''✨️ **__Formulário Staff__** ✨️
+
+☄️ **__Requisitos:__**
+🪐 *Ter mais de 13 anos*
+🪐 *Possuir maturidade e comprometimento*
+🪐 *Respeitar as regras do servidor*
+🪐*Não possuir histórico de punição durante 2 semanas no servidor*
+
+🌌 **__Formulário:__**
+*`1.` Idade:
+`2.` Área: ( Possuímos mov chat, jornalismo e divulgação )
+`3.` Por que deseja ser staff?
+`4.` De vários candidatos, por que deveríamos escolher você?
+`5.` Já recebeu alguma punição dentro do servidor? Se sim, explique o ocorrido.
+`6.` Qual a sua visão sobre a staff, qual a função dela?*
+
+⚡️ **Vagas abertas, mandem o formulário respondido no meu privado  **'''),inline=False)
+            embed.set_image(url='https://cdn.discordapp.com/attachments/1155766448396959784/1156809418051170354/FORMULARIO_20230928_012704_0000.png?ex=65165239&is=651500b9&hm=1cfb6d013e8a9c168ac594a80aa0a626e5a863fa81f30030f1a90807cd97ffbd&')
+            await channel.send(embed=embed)
+
         elif select.values[0] == "parc":
             guild = interaction.guild
             overwrites = {
@@ -370,6 +399,7 @@ async def ticket(ctx):
             channel.send(view=view2)
             fechar.callback = fecharbt
             await channel.send(f'<@&1154431601141350410> *ticket aberto para:* {interaction.user.mention}',view=view2)
+            await channel.send('confira se seu server cumpre os requisitos https://discord.com/channels/1150242910843973774/1156715865039978517')
     select.callback = my_callback
     view = View()
     view.add_item(select)
@@ -404,4 +434,4 @@ async def instagram(ctx):
     view.add_item(link)
     await ctx.send(embed=embed,view=view)
 
-bot.run('')           
+bot.run('MTE1MzEzMTU2Mjc5MjEzMjczMA.GvLGGh.r1zzvOJ1dTiQrha6guBOiulJuwYh0bgOobypLk')                    
