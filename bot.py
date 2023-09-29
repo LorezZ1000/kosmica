@@ -1,7 +1,8 @@
 import discord
 import asyncio
 from easy_pil import Editor, load_image_async, Font
-from discord.ext import commands 
+from discord.ext import commands
+from discord.ui import Button, View, Select
 from discord import File
 
 intents = discord.Intents.default()
